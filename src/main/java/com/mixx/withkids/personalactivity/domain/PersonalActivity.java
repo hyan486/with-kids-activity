@@ -4,7 +4,9 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import lombok.Data;
 
@@ -12,7 +14,8 @@ import lombok.Data;
 @Entity
 public class PersonalActivity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personalActivity_generator")
+    @SequenceGenerator(name="personalActivity_generator", sequenceName = "personalActivity_seq")
     private Long id;
     private Long userId;
     private Long activityId;

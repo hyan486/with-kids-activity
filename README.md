@@ -17,10 +17,12 @@ mvn spring-boot:run
 - maria db 를 이용하여 연결:
 - maria db server 를 기동하기 (docker)
 ```
- docker run  -d -p 3306:3306 -e MARIADB_ROOT_PASSWORD=admin  mariadb:latest 
+ docker run --name maria -d -p 3306:3306 -e MARIADB_ROOT_PASSWORD=admin  mariadb:latest 
 ```
 - 접속 및 DB 생성
 ```
+docker exec -it maria /bin/bash 
+
 root@251ce07fd6fc:/# mysql --user=root --password=$MARIADB_ROOT_PASSWORD
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 4
@@ -32,7 +34,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 MariaDB [(none)]> 
 MariaDB [(none)]> 
-MariaDB [(none)]> create database petstore
+MariaDB [(none)]> create database activity
     -> ;
 Query OK, 1 row affected (0.000 sec)
 

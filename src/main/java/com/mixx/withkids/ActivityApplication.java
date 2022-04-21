@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class ActivityApplication {
-
+	static int idx = 1;
 	static ApplicationContext applicationContext;
 	public static ApplicationContext getApplicationContext(){
 		return applicationContext;
@@ -22,16 +22,23 @@ public class ActivityApplication {
 
 	public static void main(String[] args) {
 		applicationContext = SpringApplication.run(ActivityApplication.class, args);
-		Activity activity = new Activity();
-		insertActivity(activity);
-		insertPersonalActivity(activity);
+		
+		Long activityId = insertActivity();
+		insertPersonalActivity(activityId);
+		idx++;
+		insertPersonalActivity(activityId);
+
+		activityId = insertActivity();
+		insertPersonalActivity(activityId);
+		idx++;
+		insertPersonalActivity(activityId);
 	}
 	
-	public static void insertActivity(Activity activity) {
+	public static Long insertActivity() {
 		ActivityRepository activityRepository = applicationContext.getBean(ActivityRepository.class);
-		
-		activity.setTitle("재밌는 공연1");
-		activity.setDesc("very educational performance...");
+		Activity activity = new Activity();
+		activity.setTitle("fun dance.." + Integer.toString(idx));
+		activity.setDescription("very educational performance...");
 		activity.setLocation(Location.seoul);
 		activity.setCreateDt(new Date());
 		activity.setUpdateDt(new Date());
@@ -42,16 +49,19 @@ public class ActivityApplication {
 		activityRepository.findAll().forEach(item -> {
 			System.out.println(item);
 		});
+
+		return activity.getId();
 		
 	} 
 
-	public static void insertPersonalActivity(Activity activity) {
+	public static void insertPersonalActivity(Long activityId) {
 		PersonalActivityRepository personalActivityRepository = applicationContext.getBean(PersonalActivityRepository.class);
-		
+		System.out.println("activityId "+activityId);
 		PersonalActivity personalActivity = new PersonalActivity();
 		personalActivity.setCanceled(false);
-		personalActivity.setActivityId(activity.getId());
-		personalActivity.setReserveDt("20220222");
+		personalActivity.setActivityId(activityId);
+		
+		personalActivity.setReserveDt("2022022"+Integer.toString(idx));
 		personalActivity.setUpdateDt(new Date());
 		personalActivity.setCreateDt(new Date());
 		personalActivityRepository.save(personalActivity);
